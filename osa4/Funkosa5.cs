@@ -72,6 +72,88 @@ namespace osa4
             }
         }
 
+        public static Dictionary<string, string> maakonnad = new Dictionary<string, string>()
+    {
+        {"Harjumaa", "Tallinn"},
+        {"Tartumaa", "Tartu"},
+        {"Pärnumaa", "Pärnu"}
+    };
+
+        public static void NaitaKoiki()
+        {
+            Console.WriteLine("Maakonnad ja pealinnad:");
+            foreach (var paar in maakonnad)
+            {
+                Console.WriteLine($"{paar.Key} - {paar.Value}");
+            }
+        }
+
+        public static void OtsiPealinn()
+        {
+            Console.Write("Sisesta maakonna nimi: ");
+            string maakond = Console.ReadLine();
+
+            if (maakonnad.ContainsKey(maakond))
+            {
+                Console.WriteLine($"Pealinn on: {maakonnad[maakond]}");
+            }
+            else
+            {
+                Console.WriteLine("Sellist maakonda ei leitud.");
+            }
+        }
+
+        public static void LisaUus()
+        {
+            Console.Write("Sisesta maakonna nimi: ");
+            string maakond = Console.ReadLine();
+
+            if (maakonnad.ContainsKey(maakond))
+            {
+                Console.WriteLine("See maakond on juba olemas.");
+                return;
+            }
+
+            Console.Write("Sisesta pealinna nimi: ");
+            string pealinn = Console.ReadLine();
+
+            maakonnad.Add(maakond, pealinn);
+            Console.WriteLine("Lisatud!");
+        }
+
+        public static void MuudaPealinn()
+        {
+            Console.Write("Sisesta maakonna nimi, mille pealinna soovid muuta: ");
+            string maakond = Console.ReadLine();
+
+            if (maakonnad.ContainsKey(maakond))
+            {
+                Console.Write("Sisesta uus pealinn: ");
+                string uusPealinn = Console.ReadLine();
+                maakonnad[maakond] = uusPealinn;
+                Console.WriteLine("Pealinn muudetud.");
+            }
+            else
+            {
+                Console.WriteLine("Sellist maakonda ei ole.");
+            }
+        }
+
+        public static void Kustuta()
+        {
+            Console.Write("Sisesta maakonna nimi, mida soovid kustutada: ");
+            string maakond = Console.ReadLine();
+
+            if (maakonnad.Remove(maakond))
+            {
+                Console.WriteLine("Maakond kustutatud.");
+            }
+            else
+            {
+                Console.WriteLine("Sellist maakonda ei leitud.");
+            }
+        }
+
 
 
 
