@@ -11,6 +11,7 @@ namespace osa4
     {
         public static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
             //Funkosa4.Kirjuta_failisse();
             //Console.WriteLine("faili nimi: ");
             //string failinimi = Console.ReadLine();
@@ -27,44 +28,7 @@ namespace osa4
 
             //Funkosa5.KuvadaTulemused(inimene, kcal, tooted);
 
-            while (true)
-            {
-                Console.WriteLine("\n--- Maakonnad ja Pealinnad ---");
-                Console.WriteLine("1. Näita kõiki");
-                Console.WriteLine("2. Otsi pealinna maakonna järgi");
-                Console.WriteLine("3. Lisa uus maakond ja pealinn");
-                Console.WriteLine("4. Muuda pealinna");
-                Console.WriteLine("5. Kustuta maakond");
-                Console.WriteLine("6. Välju");
-                Console.Write("Valik: ");
-
-                string valik = Console.ReadLine();
-
-                switch (valik)
-                {
-                    case "1":
-                        Funkosa5.NaitaKoiki();
-                        break;
-                    case "2":
-                        Funkosa5.OtsiPealinn();
-                        break;
-                    case "3":
-                        Funkosa5.LisaUus();
-                        break;
-                    case "4":
-                        Funkosa5.MuudaPealinn();
-                        break;
-                    case "5":
-                        Funkosa5.Kustuta();
-                        break;
-                    case "6":
-                        Console.WriteLine("Head aega!");
-                        return;
-                    default:
-                        Console.WriteLine("Tundmatu valik!");
-                        break;
-                }
-            }
+            Funkosa5.pealinnad_maakonnad();
         }
     }
 }

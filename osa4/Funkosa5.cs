@@ -72,90 +72,133 @@ namespace osa4
             }
         }
 
-        public static Dictionary<string, string> maakonnad = new Dictionary<string, string>()
-    {
-        {"Harjumaa", "Tallinn"},
-        {"Tartumaa", "Tartu"},
-        {"Pärnumaa", "Pärnu"}
-    };
-
-        public static void NaitaKoiki()
+        public static void pealinnad_maakonnad()
         {
-            Console.WriteLine("Maakonnad ja pealinnad:");
-            foreach (var paar in maakonnad)
+            Console.OutputEncoding = Encoding.UTF8;
+            Dictionary<string, string> maakonnad = new Dictionary<string, string>();
+            maakonnad["Harjumaa"] = "Tallinn";
+            maakonnad["Tartumaa"] = "Tartu";
+            maakonnad["Parnumaa"] = "Parnu";
+            maakonnad["Ida-Virumaa"] = "Johvi";
+
+
+            while (true)
             {
-                Console.WriteLine($"{paar.Key} - {paar.Value}");
+                Console.WriteLine("Vali tegevus:");
+                Console.WriteLine("1. Otsi maakonna järgi");
+                Console.WriteLine("2. Otsi linna järgi");
+                Console.WriteLine("3. Mäng");
+                Console.WriteLine("4. Välju");
+
+                string valik = Console.ReadLine().ToLower();
+
+                if (valik == "1")
+                {
+                    Console.Write("Sisesta maakonna nimi: ");
+                    string maakond = Console.ReadLine();
+
+                    string leitudPealinn = null;
+                    foreach (var paar in maakonnad)
+                    {
+                        if (paar.Key.ToLower() == maakond.ToLower())
+                        {
+                            leitudPealinn = paar.Value;
+                            break;
+                        }
+                    }
+
+                    if (leitudPealinn != null)
+                    {
+                        Console.WriteLine(maakond + "  on " + leitudPealinn);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Maakonda ei leitud. Sisesta pealinna nimi, et lisada see sõnastikku:");
+                        string pealinn = Console.ReadLine();
+                        maakonnad[maakond] = pealinn;
+                        Console.WriteLine("Maakond ja linn lisatud.");
+                    }
+                }
+                else if (valik == "2")
+                {
+                    Console.Write("Sisesta linna nimi: ");
+                    string pealinn = Console.ReadLine();
+
+                    string leitudMaakond = "";
+                    foreach (var paar in maakonnad)
+                    {
+                        if (paar.Value.ToLower() == pealinn.ToLower())
+                        {
+                            leitudMaakond = paar.Key;
+                            break;
+                        }
+                    }
+
+                    if (leitudMaakond != "")
+                    {
+                        Console.WriteLine(pealinn + " asub " + leitudMaakond + "l.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Linna ei leitud. Sisesta maakonna nimi, et lisada see sõnastikku:");
+                        string uusMaakond = Console.ReadLine();
+                        maakonnad[uusMaakond] = pealinn;
+                        Console.WriteLine("Maakond ja linn lisatud.");
+                    }
+                }
+                else if (valik == "3")
+                {
+                    int kokku = 0;
+                    int oigeid = 0;
+                    Random rnd = new Random();
+
+                    // nimekiri maakondadest
+                    List<string> allesJäänud = new List<string>(maakonnad.Keys);
+
+                    while (allesJäänud.Count > 0)
+                    {
+                        // Vali juhuslik maakond, mida pole veel küsitud
+                        int index = rnd.Next(allesJäänud.Count);
+                        string maakond = allesJäänud[index];
+                        string pealinn = maakonnad[maakond];
+
+                        Console.WriteLine("Mis on " + maakond + " linn? (kirjuta 'valju' lõpetamiseks)");
+                        string vastus = Console.ReadLine();
+
+                        if (vastus.Trim().ToLower() == "valju")
+                            break;
+
+                        kokku++;
+
+                        if (vastus.Trim().ToLower() == pealinn.ToLower())
+                        {
+                            Console.WriteLine("Õige!");
+                            oigeid++;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Vale! Õige vastus on " + pealinn);
+                        }
+
+                        // Eemaldame küsitud maakond, et ei korduks
+                        allesJäänud.RemoveAt(index);
+                    }
+
+                    Console.WriteLine($"Kokku küsimusi: {kokku}, Õigeid vastuseid: {oigeid}");
+                }
+
+                else if (valik == "4")
+                {
+                    Console.WriteLine("Head aega!");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Tundmatu valik.");
+                }
             }
         }
-
-        public static void OtsiPealinn()
-        {
-            Console.Write("Sisesta maakonna nimi: ");
-            string maakond = Console.ReadLine();
-
-            if (maakonnad.ContainsKey(maakond))
-            {
-                Console.WriteLine($"Pealinn on: {maakonnad[maakond]}");
-            }
-            else
-            {
-                Console.WriteLine("Sellist maakonda ei leitud.");
-            }
-        }
-
-        public static void LisaUus()
-        {
-            Console.Write("Sisesta maakonna nimi: ");
-            string maakond = Console.ReadLine();
-
-            if (maakonnad.ContainsKey(maakond))
-            {
-                Console.WriteLine("See maakond on juba olemas.");
-                return;
-            }
-
-            Console.Write("Sisesta pealinna nimi: ");
-            string pealinn = Console.ReadLine();
-
-            maakonnad.Add(maakond, pealinn);
-            Console.WriteLine("Lisatud!");
-        }
-
-        public static void MuudaPealinn()
-        {
-            Console.Write("Sisesta maakonna nimi, mille pealinna soovid muuta: ");
-            string maakond = Console.ReadLine();
-
-            if (maakonnad.ContainsKey(maakond))
-            {
-                Console.Write("Sisesta uus pealinn: ");
-                string uusPealinn = Console.ReadLine();
-                maakonnad[maakond] = uusPealinn;
-                Console.WriteLine("Pealinn muudetud.");
-            }
-            else
-            {
-                Console.WriteLine("Sellist maakonda ei ole.");
-            }
-        }
-
-        public static void Kustuta()
-        {
-            Console.Write("Sisesta maakonna nimi, mida soovid kustutada: ");
-            string maakond = Console.ReadLine();
-
-            if (maakonnad.Remove(maakond))
-            {
-                Console.WriteLine("Maakond kustutatud.");
-            }
-            else
-            {
-                Console.WriteLine("Sellist maakonda ei leitud.");
-            }
-        }
-
-
-
 
     }
 }
+
